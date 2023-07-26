@@ -148,7 +148,66 @@
 											"    pm.environment.set('accessToken',respJSON.data.accessToken)\r",
 											"    pm.environment.set('refreshToken',respJSON.data.refreshToken)\r",
 											"    pm.environment.set('officeId',respJSON.data.user.officeId)\r",
-											"    pm.environment.set('userId',respJSON.data.user.id)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : {{PassReg}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Admin Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 201',()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status success and role admin',()=>{\r",
+											"    \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"     pm.expect(respJSON.data.user.role).to.eq('admin')\r",
+											"    pm.environment.set('accessToken',respJSON.data.accessToken)\r",
+											"    pm.environment.set('refreshToken',respJSON.data.refreshToken)\r",
+											"    pm.environment.set('officeId',respJSON.data.user.officeId)\r",
 											"})\r",
 											""
 										],
@@ -737,6 +796,72 @@
 			"name": "Users",
 			"item": [
 				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should have response status code 201',()=>{\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test('data should have status success',()=>{\r",
+									"    const respJSON = pm.response.json()\r",
+									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+									"    pm.expect(respJSON.status).to.eq('success')\r",
+									"\r",
+									"    pm.environment.set('userId',respJSON.data.userId)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"{{$randomInt}}{{User}}\",\r\n    \"email\" : \"{{$randomInt}}{{Email}}\",\r\n    \"password\": \"{{Pass}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/users",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GET User",
 					"event": [
 						{
@@ -751,6 +876,8 @@
 									"pm.test('data should have status \"success\"',() =>{\r",
 									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
 									"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+									"\r",
+									"    pm.environment.set('KasirEmail',respJSON.data.user.email)\r",
 									"})\r",
 									""
 								],
@@ -760,7 +887,9 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"exec": [],
+								"exec": [
+									""
+								],
 								"type": "text/javascript"
 							}
 						}
@@ -822,6 +951,9 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -835,6 +967,15 @@
 						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{BASEURL}}/users",
 							"host": [
@@ -842,6 +983,72 @@
 							],
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth Kasir",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should have response code 201',()=>{\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test('data should have status success and valid officeId',() =>{\r",
+									"    const respJSON = pm.response.json()\r",
+									"    const getOfficeId = pm.environment.get('officeId')\r",
+									"    \r",
+									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+									"    pm.expect(respJSON.status).to.eq('success')\r",
+									"    pm.expect(respJSON.data.user.officeId).to.eq(getOfficeId)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{KasirEmail}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/authentications",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"authentications"
 							]
 						}
 					},
