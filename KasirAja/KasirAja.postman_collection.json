@@ -1,0 +1,853 @@
+{
+	"info": {
+		"_postman_id": "80f04fc7-8607-4c42-9f26-3c16dc767152",
+		"name": "KasirAja",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23893280",
+		"_collection_link": "https://www.postman.com/telecoms-specialist-95410738/workspace/learning-api-testing-at-kasir-aja-api/collection/23893280-80f04fc7-8607-4c42-9f26-3c16dc767152?action=share&creator=23893280&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "GET API",
+			"item": [
+				{
+					"name": "GET Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should have response status code 200', () =>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"pm.test('data should have status `ok!` and name `kasirAja Api`  ',() =>{\r",
+									"    const respJSON = pm.response.json()\r",
+									"\r",
+									"    pm.expect(respJSON).to.haveOwnProperty('data')\r",
+									"    pm.expect(respJSON.data.status).to.eq('Ok!')\r",
+									"    pm.expect(respJSON.data.name).to.eq('kasirAja Api')\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}",
+							"host": [
+								"{{BASEURL}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Positive",
+					"item": [
+						{
+							"name": "Registration",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 201',()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success',() =>{\r",
+											"    const respJson = pm.response.json()\r",
+											"    pm.expect(respJson).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJson.status).to.eq('success')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : {{NameReg}},\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : {{PassReg}}\r\n}\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/registration",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 201',()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status success and role admin',()=>{\r",
+											"    \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"     pm.expect(respJSON.data.user.role).to.eq('admin')\r",
+											"    pm.environment.set('accessToken',respJSON.data.accessToken)\r",
+											"    pm.environment.set('refreshToken',respJSON.data.refreshToken)\r",
+											"    pm.environment.set('officeId',respJSON.data.user.officeId)\r",
+											"    pm.environment.set('userId',respJSON.data.user.id)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : {{PassReg}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',()=>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success',() =>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Request with valid data"
+				},
+				{
+					"name": "Negatif",
+					"item": [
+						{
+							"name": "Duplicate Registration",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 409',()=>{\r",
+											"    pm.response.to.have.status(409)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status fail',() =>{\r",
+											"    const respJson = pm.response.json()\r",
+											"    pm.expect(respJson).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJson.status).to.eq('fail')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : {{NameReg}},\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : {{PassReg}}\r\n}\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/registration",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Registration with empty name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJson = pm.response.json()\r",
+											"pm.test('data should have status fail',() =>{\r",
+											"    pm.expect(respJson).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJson.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('nameEmptyMsg')\r",
+											"pm.test(`data should have message ${msg}`,()=>{\r",
+											"    pm.expect(respJson.message).to.eq(msg)\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"\",\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : {{PassReg}}\r\n}\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/registration",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Registration with empty email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJson = pm.response.json()\r",
+											"pm.test('data should have status fail',() =>{\r",
+											"    pm.expect(respJson).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJson.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('emailEmptyMsg')\r",
+											"pm.test(`data should have message ${msg}`,()=>{\r",
+											"    pm.expect(respJson.message).to.eq(msg)\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : {{NameReg}},\r\n    \"email\" : \"\",\r\n    \"password\" : {{PassReg}}\r\n}\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/registration",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Registration with empty password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJson = pm.response.json()\r",
+											"pm.test('data should have status fail',() =>{\r",
+											"    pm.expect(respJson).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJson.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('passEmptyMsg')\r",
+											"pm.test(`data should have message ${msg}`,()=>{\r",
+											"    pm.expect(respJson.message).to.eq(msg)\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : {{NameReg}},\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : \"\"\r\n}\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/registration",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Registration with empty form",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJson = pm.response.json()\r",
+											"pm.test('data should have status fail',() =>{\r",
+											"    pm.expect(respJson).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJson.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('passEmptyMsg')\r",
+											"pm.test(`data should have message ${msg}`,()=>{\r",
+											"    pm.expect(respJson.message).to.eq(msg)\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : {{NameReg}},\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : \"\"\r\n}\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/registration",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login with empty email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status fail',()=>{\r",
+											"    \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('emailEmptyMsg')\r",
+											"pm.test(`data should have message ${msg}`,()=>{\r",
+											"\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"\",\r\n    \"password\" : {{PassReg}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login with empty password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status fail',() =>{\r",
+											" \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('passEmptyMsg')\r",
+											"// console.log(msg)\r",
+											"pm.test(`data should have message ${msg}`, () =>{\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login with empty form",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status fail',() =>{\r",
+											" \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('logEmptyAllMsg')\r",
+											"// console.log(msg)\r",
+											"pm.test(`data should have message ${msg}`, () =>{\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"\",\r\n    \"password\" : \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Request with invalid data"
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GET User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should have response status code 200',() =>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"const respJSON = pm.response.json()\r",
+									"pm.test('data should have status \"success\"',() =>{\r",
+									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+									"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/users/{{userId}}",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should have response status code 200',() =>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"const respJSON = pm.response.json()\r",
+									"pm.test('data should have status \"success\"',() =>{\r",
+									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+									"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/users",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
