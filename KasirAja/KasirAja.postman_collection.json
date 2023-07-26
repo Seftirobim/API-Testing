@@ -306,7 +306,7 @@
 					"description": "Request with valid data"
 				},
 				{
-					"name": "Negatif",
+					"name": "Negative",
 					"item": [
 						{
 							"name": "Duplicate Registration",
@@ -829,11 +829,11 @@
 					],
 					"request": {
 						"auth": {
-							"type": "oauth2",
-							"oauth2": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "addTokenTo",
-									"value": "header",
+									"key": "token",
+									"value": "{{accessToken}}",
 									"type": "string"
 								}
 							]
@@ -1015,21 +1015,16 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"exec": [],
+								"exec": [
+									""
+								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
 						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
