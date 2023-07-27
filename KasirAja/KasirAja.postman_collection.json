@@ -189,66 +189,6 @@
 							"response": []
 						},
 						{
-							"name": "Login Admin Copy",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test('should have response status code 201',()=>{\r",
-											"    pm.response.to.have.status(201)\r",
-											"})\r",
-											"\r",
-											"const respJSON = pm.response.json()\r",
-											"pm.test('data should have status success and role admin',()=>{\r",
-											"    \r",
-											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
-											"    pm.expect(respJSON.status).to.eq('success')\r",
-											"     pm.expect(respJSON.data.user.role).to.eq('admin')\r",
-											"    pm.environment.set('accessToken',respJSON.data.accessToken)\r",
-											"    pm.environment.set('refreshToken',respJSON.data.refreshToken)\r",
-											"    pm.environment.set('officeId',respJSON.data.user.officeId)\r",
-											"})\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\" : {{EmailReg}},\r\n    \"password\" : {{PassReg}}\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{BASEURL}}/authentications",
-									"host": [
-										"{{BASEURL}}"
-									],
-									"path": [
-										"authentications"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Logout Auth",
 							"event": [
 								{
@@ -796,258 +736,918 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "Create User",
-					"event": [
+					"name": "Positive",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('should have response status code 201',()=>{\r",
-									"    pm.response.to.have.status(201)\r",
-									"})\r",
-									"\r",
-									"pm.test('data should have status success',()=>{\r",
-									"    const respJSON = pm.response.json()\r",
-									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
-									"    pm.expect(respJSON.status).to.eq('success')\r",
-									"\r",
-									"    pm.environment.set('userId',respJSON.data.userId)\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+							"name": "Create User",
+							"event": [
 								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 201',()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success',()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"\r",
+											"    pm.environment.set('userId',respJSON.data.userId)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"{{$randomInt}}{{User}}\",\r\n    \"email\" : \"{{$randomInt}}{{Email}}\",\r\n    \"password\": \"{{Pass}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASEURL}}/users",
-							"host": [
-								"{{BASEURL}}"
 							],
-							"path": [
-								"users"
-							]
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{$randomInt}}{{User}}\",\r\n    \"email\" : \"{{$randomInt}}{{Email}}\",\r\n    \"password\": \"{{Pass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',() =>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status \"success\"',() =>{\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+											"\r",
+											"    pm.environment.set('KasirEmail',respJSON.data.user.email)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/users/{{userId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',() =>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status \"success\"',() =>{\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Kasir",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response code 201',()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"\r",
+											"pm.test('data should have status success and valid officeId',() =>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    const getOfficeId = pm.environment.get('officeId')\r",
+											"    \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"    pm.expect(respJSON.data.user.officeId).to.eq(getOfficeId)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{KasirEmail}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',() =>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status \"success\"',() =>{\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+											"\r",
+											"    pm.environment.set('NameKasir',respJSON.data.name)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set('updateName',pm.variables.replaceIn('{{$randomInt}}updateUser'))"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{updateName}}\",\r\n    \"email\" : \"{{KasirEmail}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users/{{userId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',() =>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status \"success\"',() =>{\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+											"\r",
+											"    pm.environment.set('EmailKasir',respJSON.data.email)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set('updateEmail',pm.variables.replaceIn('{{$randomInt}}update-email@exp.com'))"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{updateName}}\",\r\n    \"email\" : \"{{updateEmail}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users/{{userId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',() =>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"const respJSON = pm.response.json()\r",
+											"pm.test('data should have status \"success\"',() =>{\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq(\"success\")\r",
+											"\r",
+											"    pm.environment.set('EmailKasir',respJSON.data.email)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set('updatePass',pm.variables.replaceIn('{{$randomInt}}updatePass123'))"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{updateName}}\",\r\n    \"email\" : \"{{updateEmail}}\",\r\n    \"password\": \"{{updatePass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users/{{userId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Kasir Update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response code 201',()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"\r",
+											"pm.test('data should have status success and valid officeId',() =>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    const getOfficeId = pm.environment.get('officeId')\r",
+											"    \r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"    pm.expect(respJSON.data.user.officeId).to.eq(getOfficeId)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{updateEmail}}\",\r\n    \"password\" : \"{{updatePass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/authentications",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',()=>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success ',()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/users/{{userId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "GET User",
-					"event": [
+					"name": "Negative",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('should have response status code 200',() =>{\r",
-									"    pm.response.to.have.status(200)\r",
-									"})\r",
-									"\r",
-									"const respJSON = pm.response.json()\r",
-									"pm.test('data should have status \"success\"',() =>{\r",
-									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
-									"    pm.expect(respJSON.status).to.eq(\"success\")\r",
-									"\r",
-									"    pm.environment.set('KasirEmail',respJSON.data.user.email)\r",
-									"})\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+							"name": "Create User with empty nama",
+							"event": [
 								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/users/{{userId}}",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"users",
-								"{{userId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET Users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('should have response status code 200',() =>{\r",
-									"    pm.response.to.have.status(200)\r",
-									"})\r",
-									"\r",
-									"const respJSON = pm.response.json()\r",
-									"pm.test('data should have status \"success\"',() =>{\r",
-									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
-									"    pm.expect(respJSON.status).to.eq(\"success\")\r",
-									"})\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('nameEmptyMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`,()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
 								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASEURL}}/users",
-							"host": [
-								"{{BASEURL}}"
 							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Auth Kasir",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('should have response code 201',()=>{\r",
-									"    pm.response.to.have.status(201)\r",
-									"})\r",
-									"\r",
-									"\r",
-									"pm.test('data should have status success and valid officeId',() =>{\r",
-									"    const respJSON = pm.response.json()\r",
-									"    const getOfficeId = pm.environment.get('officeId')\r",
-									"    \r",
-									"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
-									"    pm.expect(respJSON.status).to.eq('success')\r",
-									"    pm.expect(respJSON.data.user.officeId).to.eq(getOfficeId)\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"\",\r\n    \"email\" : \"{{$randomInt}}{{Email}}\",\r\n    \"password\": \"{{Pass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"{{KasirEmail}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Create User with empty email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('emailEmptyMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`,()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "{{BASEURL}}/authentications",
-							"host": [
-								"{{BASEURL}}"
 							],
-							"path": [
-								"authentications"
-							]
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{$randomInt}}{{Name}}\",\r\n    \"email\" : \"\",\r\n    \"password\": \"{{Pass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User with empty password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('passEmptyMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`,()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{$randomInt}}{{Name}}\",\r\n    \"email\" : \"{{$randomInt}}{{Email}}\",\r\n    \"password\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User with empty form",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('regEmptyAllMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`,()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"\",\r\n    \"email\" : \"\",\r\n    \"password\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User with numeric nama field",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400',()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('nameNumericMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`,()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{$randomInt}}\",\r\n    \"email\" : \"{{$randomInt}}{{Email}}\",\r\n    \"password\": \"{{Pass}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/users",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
