@@ -1318,7 +1318,7 @@
 					"name": "Negative",
 					"item": [
 						{
-							"name": "Create User with empty nama",
+							"name": "Create User with empty name",
 							"event": [
 								{
 									"listen": "test",
@@ -1582,7 +1582,7 @@
 							"response": []
 						},
 						{
-							"name": "Create User with numeric nama field",
+							"name": "Create User with numeric name field",
 							"event": [
 								{
 									"listen": "test",
@@ -1642,6 +1642,469 @@
 									],
 									"path": [
 										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Positive",
+					"item": [
+						{
+							"name": "Create Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 201', ()=>{\r",
+											"    pm.response.to.have.status(201)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success', ()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"    pm.environment.set('CatId',respJSON.data.categoryId)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{$randomInt}}-category name\",\r\n    \"description\" :\"{{$randomInt}}-category description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200', ()=>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success', ()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200', ()=>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success', ()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories/{{CatId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories",
+										"{{CatId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200',()=>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success',()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"{{$randomInt}}-Update category name\",\r\n    \"description\" :\"{{$randomInt}}-Update category description\"\r\n}   \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories/{{CatId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories",
+										"{{CatId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 200', ()=>{\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test('data should have status success', ()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('success')\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories/{{CatId}}",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories",
+										"{{CatId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative",
+					"item": [
+						{
+							"name": "Create Category with empty name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400', ()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('nameEmptyMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`, ()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"\",\r\n    \"description\" :\"{{$randomInt}}-category description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Category with numeric name field",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should have response status code 400', ()=>{\r",
+											"    pm.response.to.have.status(400)\r",
+											"})\r",
+											"\r",
+											"const msg = pm.environment.get('nameNumericMsg')\r",
+											"pm.test(`data should have status fail and message ${msg}`, ()=>{\r",
+											"    const respJSON = pm.response.json()\r",
+											"    pm.expect(respJSON).to.haveOwnProperty('status')\r",
+											"    pm.expect(respJSON.status).to.eq('fail')\r",
+											"    pm.expect(respJSON.message).to.eq(msg)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : 123123123,\r\n    \"description\" :\"{{$randomInt}}-category description\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/categories",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"categories"
 									]
 								}
 							},
